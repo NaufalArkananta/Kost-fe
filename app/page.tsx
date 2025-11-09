@@ -1,103 +1,115 @@
-import Image from "next/image";
+"use client";
+import axiosInstance from "@/lib/axios";
+import { storeCookie } from "@/lib/client-cookies";
+import { Home, Lock, User } from "lucide-react";
+import { useRouter } from "next/navigation";
+import { FormEvent, useState } from "react";
 
-export default function Home() {
-  return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+export default function LoginPage() {
+    const [email, setEmail] = useState<string>("")
+    const [password, setPassword] = useState<string>("")
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+    const router = useRouter()
+
+const handleSubmit = async (e: FormEvent) => {
+    try {
+        e.preventDefault()
+        const url = `login`
+        const requestData = { email, password }
+
+        // hit endpoint
+        const response: any = await axiosInstance.post(url, requestData)
+        const user = response.data?.user
+
+        if (!user) {
+            console.log("Login gagal: response tidak ada user")
+            return
+        } else {
+            const access_token = response.data.access_token
+            const role = response.data.user.role
+
+            // store access_token in cookie
+            storeCookie(`access_token`, access_token)
+            
+            // store role in cookie
+            storeCookie(`role`, role)
+
+            if (role === `owner`) {
+                setTimeout(() => router.replace(`/owner/dashboard`), 1000)
+            } else {
+                setTimeout(() => router.replace(`/home`), 1000)
+            }
+        }
+    } catch (error) {
+        console.log(error)
+    }
+}
+    return (
+        <div className="min-h-screen w-full flex items-start justify-center bg-gradient-to-br from-green-200 via-white to-green-300 pt-20">
+            <div className="backdrop-blur-xl bg-white/30 border border-white/40 shadow-xl rounded-2xl w-full max-w-md p-8 flex flex-col items-center">
+
+                {/* Logo */}
+                <div className="bg-[#2E8B57] w-14 h-14 flex items-center justify-center rounded-full shadow-md mb-4">
+                    <Home size={28} className="text-white" />
+                </div>
+
+                {/* Heading */}
+                <h1 className="text-2xl font-bold text-[#2E8B57]">Welcome👋</h1>
+                <p className="text-gray-600 text-sm mb-6">Masuk ke akun KOST_HUNTER kamu</p>
+
+                {/* Form */}
+                <form className="w-full flex flex-col gap-4" onSubmit={e => handleSubmit(e)}>
+
+                    {/* Username */}
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2E8B57]">
+                            <User size={18} />
+                        </span>
+                        <input
+                            type="text"
+                            placeholder="Email"
+                            id={`email`}
+                            value={email}
+                            onChange={e => setEmail(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg text-black bg-white/60 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2E8B57]"
+                        />
+                    </div>
+
+                    {/* Password */}
+                    <div className="relative">
+                        <span className="absolute left-3 top-1/2 -translate-y-1/2 text-[#2E8B57]">
+                            <Lock size={18} />
+                        </span>
+                        <input
+                            type="password"
+                            placeholder="Password"
+                            id={`password`}
+                            value={password}
+                            onChange={e => setPassword(e.target.value)}
+                            className="w-full pl-10 pr-4 py-3 rounded-lg text-black bg-white/60 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-[#2E8B57]"
+                        />
+                    </div>
+
+                    {/* Remember + Forgot */}
+                    <div className="flex items-center justify-between text-sm">
+                        <div className="flex items-center gap-2">
+                            <input type="checkbox" className="accent-[#2E8B57]" />
+                            <span className="text-gray-700">Ingat saya</span>
+                        </div>
+                        <button type="button" className="text-[#2E8B57] hover:underline">
+                            Lupa password?
+                        </button>
+                    </div>
+
+                    {/* Button */}
+                    <button
+                        type="submit"
+                        className="w-full bg-[#2E8B57] text-white py-3 rounded-lg hover:opacity-90 transition font-medium"
+                    >
+                        Masuk
+                    </button>
+                </form>
+            </div>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+    );
 }
