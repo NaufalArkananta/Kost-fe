@@ -1,12 +1,14 @@
 // lib/authorization.ts
 import { cookies } from "next/headers";
 
-export const verifySociety = () => {
-  const role = cookies().get("role")?.value;
+export const verifySociety = async () => {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
   return role === "society";
 };
 
-export const verifyOwner = () => {
-  const role = cookies().get("role")?.value;
+export const verifyOwner = async () => {
+  const cookieStore = await cookies();
+  const role = cookieStore.get("role")?.value;
   return role === "owner";
 };

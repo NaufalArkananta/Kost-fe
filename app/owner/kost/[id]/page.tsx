@@ -4,6 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import AddFoto from "./AddFoto";
 import DeleteFoto from "./DeleteFoto";
+import UpdateFoto from "./UpdateFoto";
 
 type KosImage = {
   id: number;
@@ -46,10 +47,10 @@ const getKosDetail = async (id: string): Promise<KosDetailType | null> => {
 export default async function KosDetailPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
-  const kos = await getKosDetail(params.id);
-
+  const { id } = await params; // ✅ tunggu params dulu
+  const kos = await getKosDetail(id);
   if (!kos) {
     return (
       <div className="p-5">
@@ -113,8 +114,12 @@ export default async function KosDetailPage({
               className="rounded-lg border object-cover"
               unoptimized
             />
-            {/* Tombol hapus di pojok kanan atas */}
-            <DeleteFoto imageId={img.id} />
+
+            {/* 🔹 Tombol Update (kiri atas) */}
+            <UpdateFoto imageId={img.id} />
+
+            {/* 🔹 Tombol Hapus (kanan atas) */}
+            <DeleteFoto imageId={img.id} filePath={img.file} />
           </div>
         );
       })}

@@ -6,7 +6,6 @@ export const middleware = async (request: NextRequest) => {
   const role = request.cookies.get("role")?.value;
   const { pathname } = request.nextUrl;
 
-  // Helper redirect cepat + auto clear cookie (untuk logout)
   const redirectTo = (path: string, clearCookies = false) => {
     const response = NextResponse.redirect(new URL(path, request.url));
     if (clearCookies) {
@@ -16,40 +15,35 @@ export const middleware = async (request: NextRequest) => {
     return response;
   };
 
-  // 🔹 1. Belum login → hanya boleh ke halaman login (/)
   if (!access_token || !role) {
-    if (pathname === "/") return NextResponse.next(); // tampil halaman login
-    return redirectTo("/", true); // hapus cookie (kalau ada) dan ke login
+    if (pathname === "/") return NextResponse.next();
+    return redirectTo("/", true);
   }
 
   // 🔹 2. Jika sudah login dan buka halaman login (/)
   if (pathname === "/") {
-    if (verifySociety()) {
-      return redirectTo("/society");
-    } else if (verifyOwner()) {
-      return redirectTo("/owner");
+    if (await verifySociety()) {
+      return redirectTo("/society/home");
+    } else if (await verifyOwner()) {
+      return redirectTo("/owner/kost");
     } else {
-      return redirectTo("/", true); // role tidak valid
+      return redirectTo("/", true);
     }
   }
 
   // 🔹 3. Proteksi akses sesuai role
-  if (verifySociety()) {
-    // Society hanya boleh akses halaman /society
+  if (await verifySociety()) {
     if (!pathname.startsWith("/society")) {
-      return redirectTo("/society");
+      return redirectTo("/society/home");
     }
-  } else if (verifyOwner()) {
-    // Owner hanya boleh akses halaman /owner
+  } else if (await verifyOwner()) {
     if (!pathname.startsWith("/owner")) {
-      return redirectTo("/owner");
+      return redirectTo("/owner/kost");
     }
   } else {
-    // Role tidak dikenal → logout
     return redirectTo("/", true);
   }
 
-  // 🔹 4. Semua aman → lanjut
   return NextResponse.next();
 };
 

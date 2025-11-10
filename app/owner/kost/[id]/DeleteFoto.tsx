@@ -3,12 +3,15 @@
 import { useRouter } from "next/navigation";
 import { toast } from "react-toastify";
 import { X } from "lucide-react";
+import axiosInstance from "@/lib/axios";
+import Cookies from "js-cookie";
 
 type Props = {
   imageId: number;
+  filePath: string;
 };
 
-export default function DeleteFoto({ imageId }: Props) {
+export default function DeleteFoto({ imageId, filePath }: Props) {
   const router = useRouter();
 
   const handleDelete = async () => {
@@ -16,17 +19,40 @@ export default function DeleteFoto({ imageId }: Props) {
     if (!confirmDelete) return;
 
     try {
-      const res = await fetch(`/api/delete-image/${imageId}`, {
-        method: "DELETE",
+      const access_token = Cookies.get("access_token");
+      if (!access_token) {
+        toast("Token tidak ditemukan, silakan login ulang", { type: "error" });
+        return;
+      }
+
+      // 🔹 1. Hapus di backend (database)
+      const res = await axiosInstance.delete(`/admin/delete_image/${imageId}`, {
+        headers: {
+          Authorization: `Bearer ${access_token}`,
+        },
       });
 
-      const data = await res.json();
+      if (res.data.status === "success") {
+        // 🔹 2. Hapus file lokal dari /public/images
+// 🔹 2. Hapus file lokal dari /public/images (Next.js local API)
+const delRes = await fetch("/api/delete-local-image", {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify({ filePath }),
+});
 
-      if (res.ok && data.status === "success") {
-        toast("Foto berhasil dihapus", { type: "success" });
-        setTimeout(() => router.refresh(), 800);
+const delData = await delRes.json();
+
+if (delData.status === "success") {
+  toast("Foto berhasil dihapus", { type: "success" });
+  setTimeout(() => router.refresh(), 1000);
+} else {
+  toast("Foto dihapus di database tapi gagal hapus file lokal", {
+    type: "warning",
+  });
+}
       } else {
-        toast(data.message || "Gagal menghapus foto", { type: "warning" });
+        toast(res.data.message || "Gagal menghapus foto", { type: "error" });
       }
     } catch (err) {
       console.error(err);

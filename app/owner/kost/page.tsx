@@ -75,6 +75,7 @@ const KosPage = async () => {
 
                   <EditKos kos={kos} />
                   <DropKos kos={kos} />
+                  <h1>{kos.id}</h1>
                 </td>
               </tr>
             ))}
