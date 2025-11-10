@@ -55,5 +55,7 @@ export const middleware = async (request: NextRequest) => {
 
 // Middleware aktif di semua halaman kecuali aset statis & API
 export const config = {
-  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
+  matcher: [
+    "/((?!api|_next/static|_next/image|favicon.ico|images|assets|uploads).*)",
+  ],
 };

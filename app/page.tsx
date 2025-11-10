@@ -27,12 +27,15 @@ const handleSubmit = async (e: FormEvent) => {
         } else {
             const access_token = response.data.access_token
             const role = response.data.user.role
+            const id = response.data.user.id
 
             // store access_token in cookie
             storeCookie(`access_token`, access_token)
             
             // store role in cookie
             storeCookie(`role`, role)
+            
+            storeCookie(`user_id`, id)
 
             if (role === `owner`) {
                 setTimeout(() => router.replace(`/owner/dashboard`), 1000)

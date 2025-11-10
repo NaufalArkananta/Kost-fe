@@ -1,41 +1,44 @@
 import { getServerCookie } from "@/lib/server-cookies";
 import axiosInstance from "@/lib/axios";
-import AddKos from "./AddKos"
-import EditKos from "./EditKos"
-import DropKos from "./DropKos"
+import AddKos from "./AddKos";
+import EditKos from "./EditKos";
+import DropKos from "./DropKos";
+import Link from "next/link";
+import { Info } from "lucide-react"; // ikon info opsional
 
 type KosImage = {
-  id: number
-  kos_id: number
-  file: string
-}
+  id: number;
+  kos_id: number;
+  file: string;
+};
 
 type KosType = {
-  id: number
-  user_id: number
-  name: string
-  address: string
-  price_per_month: string
-  gender: string
-  kos_image: KosImage[]
-}
+  id: number;
+  user_id: number;
+  name: string;
+  address: string;
+  price_per_month: string;
+  gender: string;
+  kos_image: KosImage[];
+};
 
 const getKos = async (): Promise<KosType[]> => {
   try {
-    const access_token = await getServerCookie(`access_token`)
+    const access_token = await getServerCookie(`access_token`);
     const res: any = await axiosInstance.get("admin/show_kos?search=", {
       headers: { authorization: `Bearer ${access_token}` },
-    })
-    if (res.data.status === "success") return res.data.data
-    return []
+    });
+    if (res.data.status === "success") return res.data.data;
+    return [];
   } catch (e) {
-    console.log(e)
-    return []
+    console.log(e);
+    return [];
   }
-}
+};
 
 const KosPage = async () => {
-  const listKos = await getKos()
+  const listKos = await getKos();
+
   return (
     <div className="w-full p-5 bg-white text-black">
       <h1 className="text-xl font-semibold">Data Kos</h1>
@@ -60,7 +63,16 @@ const KosPage = async () => {
                 <td className="p-2">{kos.address}</td>
                 <td className="p-2">Rp {kos.price_per_month}</td>
                 <td className="p-2">{kos.gender}</td>
-                <td className="p-2 flex gap-2">
+                <td className="p-2 flex gap-2 items-center">
+                  {/* Tombol Detail Kos */}
+                  <Link
+                    href={`/owner/kost/${kos.id}`}
+                    className="p-1 rounded bg-blue-500 hover:bg-blue-600 text-white flex items-center justify-center"
+                    title="Lihat Detail Kos"
+                  >
+                    <Info size={16} />
+                  </Link>
+
                   <EditKos kos={kos} />
                   <DropKos kos={kos} />
                 </td>
@@ -70,7 +82,7 @@ const KosPage = async () => {
         </table>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default KosPage
+export default KosPage;

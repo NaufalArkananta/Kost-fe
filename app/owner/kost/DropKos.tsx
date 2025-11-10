@@ -21,7 +21,7 @@ const DropKos = ({ kos }: { kos: KosType }) => {
         headers: { authorization: `Bearer ${access_token}` },
       })
       const msg = res.data.message
-      if (res.data.status === "success") {
+      if (res.data.status === true) {
         toast(msg, { containerId: `dropKos-${kos.id}`, type: "success" })
         setShow(false)
         setTimeout(() => router.refresh(), 1000)
