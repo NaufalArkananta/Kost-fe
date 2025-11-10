@@ -5,6 +5,9 @@ import Link from "next/link";
 import AddFoto from "./AddFoto";
 import DeleteFoto from "./DeleteFoto";
 import UpdateFoto from "./UpdateFoto";
+import AddFacility from "./AddFacility";
+import DeleteFacility from "./DeleteFacility";
+import UpdateFacility from "./UpdateFacility";
 
 type KosImage = {
   id: number;
@@ -13,6 +16,7 @@ type KosImage = {
 };
 
 type KosFacility = {
+  facility_name: ReactNode;
   id: number;
   name: string;
 };
@@ -131,16 +135,28 @@ export default async function KosDetailPage({
 
         {/* Fasilitas Kos */}
         <div className="mt-5">
-          <h3 className="font-medium mb-2">Fasilitas:</h3>
-          {kos.kos_facilities.length > 0 ? (
-            <ul className="list-disc pl-5 text-sm">
-              {kos.kos_facilities.map((fasilitas) => (
-                <li key={fasilitas.id}>{fasilitas.name}</li>
-              ))}
-            </ul>
-          ) : (
-            <p className="text-gray-500 text-sm">Belum ada fasilitas</p>
-          )}
+          <div className="flex items-center justify-between mb-2">
+            <h3 className="font-medium">Fasilitas:</h3>
+            {/* 🔹 Tombol tambah fasilitas */}
+            <AddFacility kosId={kos.id} />
+          </div>
+
+<div className="flex flex-wrap gap-2">
+  {kos.kos_facilities.map((fasilitas) => (
+    <div
+      key={fasilitas.id}
+      className="flex items-center gap-2 bg-gray-100 rounded px-3 py-1 text-sm"
+    >
+      <span>{fasilitas.facility_name}</span>
+      <UpdateFacility
+        facilityId={fasilitas.id}
+        currentName={fasilitas.facility_name}
+      />
+      <DeleteFacility facilityId={fasilitas.id} />
+    </div>
+  ))}
+</div>
+
         </div>
       </div>
     </div>
