@@ -54,7 +54,7 @@ export default async function Home() {
 
           <div className="flex justify-center">
             <Image
-              src="/images/bg_home.jpeg"
+              src="/images/bg-img.jpg"
               alt="Kamar Kost"
               width={520}
               height={340}
@@ -71,7 +71,7 @@ export default async function Home() {
       <section className="bg-[#F3F8F3] py-24 px-6 border-t border-gray-200">
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 gap-12 items-center">
           <Image
-            src="/images/bg_home.jpeg"
+            src="/images/bg-tentang-kami.jpg"
             alt="Kamar Kost"
             width={600}
             height={400}
@@ -120,7 +120,7 @@ export default async function Home() {
                         .replace('images/', '')
                         .replace(/\s+/g, '_')
                     )}`
-                    : "/images/kamar1.jpeg"
+                    : "/images/default.jpg"
                 }
                 alt={kost.name}
                 width={400}

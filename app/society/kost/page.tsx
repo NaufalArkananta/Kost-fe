@@ -53,7 +53,7 @@ export default async function DashboardPage({
                   src={
                     kost.kos_image?.length > 0
                       ? `/${kost.kos_image[0].file.replace(/\s+/g, "_")}`
-                      : "/images/kamar1.jpeg"
+                      : "/images/default.jpg"
                   }
                   alt={kost.name}
                   width={400}

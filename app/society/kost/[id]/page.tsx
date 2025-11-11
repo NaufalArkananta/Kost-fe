@@ -8,6 +8,7 @@ import Link from "next/link";
 import { ArrowLeft, Star, X } from "lucide-react";
 import AddReview from "./AddReview";
 import DeleteReview from "./DeleteReview";
+import AddBooking from "./AddBooking";
 
 export default function KostDetail({ params }: { params: { id: string } }) {
   const [kost, setKost] = useState<any>(null);
@@ -15,6 +16,8 @@ export default function KostDetail({ params }: { params: { id: string } }) {
   const [showAdd, setShowAdd] = useState(false);
   const [showDelete, setShowDelete] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
+  const [showBooking, setShowBooking] = useState(false);
+
 
   const userId = Cookies.get("user_id"); // 🔥 ambil user_id dari cookie
 
@@ -109,6 +112,16 @@ export default function KostDetail({ params }: { params: { id: string } }) {
             </span>
           </div>
 
+          {/* Tombol Booking */}
+<div className="mt-6">
+  <button
+    onClick={() => setShowBooking(true)}
+    className="bg-[#2E8B57] text-white px-5 py-2 rounded-md hover:bg-[#276e47] transition"
+  >
+    Booking Kost
+  </button>
+</div>
+
           <hr className="my-6 border-gray-200" />
           <p className="text-gray-700 leading-relaxed text-lg">
             {kost.description || "Tidak ada deskripsi tersedia."}
@@ -195,6 +208,13 @@ export default function KostDetail({ params }: { params: { id: string } }) {
         onClose={() => setShowAdd(false)}
         onSuccess={fetchReviews}
       />
+
+      {/* === MODAL TAMBAH BOOKING === */}
+      <AddBooking
+  kostId={params.id}
+  isShow={showBooking}
+  onClose={() => setShowBooking(false)}
+/>
     </div>
   );
 }

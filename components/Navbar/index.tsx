@@ -30,9 +30,10 @@ const Navbar = () => {
             </div>
 
             <ul className="hidden md:flex gap-6 text-sm font-medium text-zinc-600">
-                <li><Link href="/" className="hover:text-[#2E8B57] transition">Beranda</Link></li>
+                <li><Link href="/society/home" className="hover:text-[#2E8B57] transition">Beranda</Link></li>
                 <li><Link href="#" className="hover:text-[#2E8B57] transition">Tentang Kami</Link></li>
-                <li><Link href="/kost" className="hover:text-[#2E8B57] transition">Kost</Link></li>
+                <li><Link href="/society/kost" className="hover:text-[#2E8B57] transition">Kost</Link></li>
+                <li><Link href="/society/history" className="hover:text-[#2E8B57] transition">History</Link></li>
             </ul>
 
             <div className="flex items-center gap-3 text-zinc-600">
