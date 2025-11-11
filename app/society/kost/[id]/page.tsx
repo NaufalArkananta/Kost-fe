@@ -171,7 +171,6 @@ export default function KostDetail({ params }: { params: { id: string } }) {
                       </button>
                     )}
 
-                    <p className="font-semibold">User ID: {r.user_id}</p>
                     <p className="text-gray-600 mt-2">{r.comment}</p>
                   </div>
                 ))}
