@@ -104,7 +104,7 @@ export default function OwnerDashboard() {
                             : "bg-red-100 text-red-700"
                         }`}
                       >
-                        {b.status}
+                        {b.status.toUpperCase()}
                       </span>
                     </td>
                     <td className="px-4 py-3 border text-center space-x-2">

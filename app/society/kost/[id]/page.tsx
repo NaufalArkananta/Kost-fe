@@ -73,7 +73,7 @@ export default function KostDetail({ params }: { params: { id: string } }) {
     <div className="min-h-screen bg-white text-gray-800 px-6 py-10">
       <div className="max-w-5xl mx-auto">
         <Link
-          href="/kost"
+          href="/society/kost"
           className="flex items-center gap-2 text-[#2E8B57] hover:underline mb-6 font-medium"
         >
           <ArrowLeft size={18} /> Kembali ke daftar kost
@@ -97,7 +97,7 @@ export default function KostDetail({ params }: { params: { id: string } }) {
             unoptimized
           />
           <span className="absolute top-4 left-4 bg-[#2E8B57] text-white text-xs px-3 py-1 rounded-full">
-            {kost.gender}
+            {kost.gender?.toUpperCase()}
           </span>
         </div>
 

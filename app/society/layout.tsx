@@ -7,10 +7,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-      <body>
+      <div>
         <Navbar />
         <main className="flex-1">{children}</main>
         <Footer />
-      </body>
+      </div>
   );
 }

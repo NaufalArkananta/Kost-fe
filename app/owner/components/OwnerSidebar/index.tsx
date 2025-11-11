@@ -11,10 +11,7 @@ export default function OwnerSidebar() {
   const links = [
     { href: "/owner/dashboard", label: "🏠 Dashboard" },
     { href: "/owner/kost", label: "🏘️ Data Kos" },
-    { href: "/owner/fasilitas", label: "🧰 Fasilitas" },
-    { href: "/owner/pemesanan", label: "📦 Pemesanan" },
-    { href: "/owner/review", label: "💬 Review" },
-    { href: "/owner/laporan", label: "📊 Laporan" },
+    { href: "/owner/history", label: "💬 Histori" },
   ];
 
   const handleLogout = () => {
@@ -23,7 +20,7 @@ export default function OwnerSidebar() {
     Cookies.remove("user_id");
 
     // Redirect ke halaman login
-    router.push("/login");
+    router.push("/");
   };
 
   return (

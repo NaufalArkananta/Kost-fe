@@ -62,7 +62,7 @@ export default async function DashboardPage({
                   unoptimized
                 />
                 <span className="absolute top-3 left-3 bg-[#2E8B57] text-white text-xs px-3 py-1 rounded-md">
-                  {kost.gender}
+                  {kost.gender?.toUpperCase()}
                 </span>
                 <span className="absolute bottom-3 right-3 bg-[#FFFBEA] text-gray-700 text-xs px-3 py-1 rounded-md">
                   {kost.kos_facilities?.length

@@ -2,8 +2,10 @@
 import axiosInstance from "@/lib/axios";
 import { storeCookie } from "@/lib/client-cookies";
 import { Home, Lock, User } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
+import { toast } from "react-toastify";
 
 export default function LoginPage() {
     const [email, setEmail] = useState<string>("")
@@ -38,8 +40,10 @@ const handleSubmit = async (e: FormEvent) => {
             storeCookie(`user_id`, id)
 
             if (role === `owner`) {
+                toast.success("Login berhasil!");
                 setTimeout(() => router.replace(`/owner/dashboard`), 1000)
             } else {
+                toast.success("Login berhasil! Silakan login.");
                 setTimeout(() => router.replace(`/home`), 1000)
             }
         }
@@ -99,9 +103,9 @@ const handleSubmit = async (e: FormEvent) => {
                             <input type="checkbox" className="accent-[#2E8B57]" />
                             <span className="text-gray-700">Ingat saya</span>
                         </div>
-                        <button type="button" className="text-[#2E8B57] hover:underline">
-                            Lupa password?
-                        </button>
+                        <Link href={`/register`} className="text-[#2E8B57] hover:underline">
+                            Buat Akun
+                        </Link>
                     </div>
 
                     {/* Button */}

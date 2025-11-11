@@ -25,11 +25,11 @@ export default function BookingHistory() {
   const [statusFilter, setStatusFilter] = useState<string>("");
   const [loading, setLoading] = useState(false);
 
-  const userId = Cookies.get("user_id");
-  const token = Cookies.get("access_token");
-
   const fetchBookings = async (status?: string) => {
     try {
+
+          const userId = Cookies.get("user_id");
+  const token = Cookies.get("access_token");
       setLoading(true);
       const url = status
         ? `/society/show_bookings?status=${status}`
@@ -42,13 +42,15 @@ export default function BookingHistory() {
       });
 
       console.log("Fetch Bookings Response:", res.data);
+      console.log("Current User ID:", userId);
 
       if (res.data.status === "success") {
         // Filter hanya milik user login
-        const userBookings = res.data.data.filter(
-          (b: Booking) => String(b.user_id) === String(4) //b.user_id
-        );
-        setBookings(userBookings);
+        // const userBookings = res.data.data.filter(
+        //   (b: Booking) => String(b.user_id) === String(userId) //b.user_id
+        // );
+        // setBookings(userBookings);
+        setBookings(res.data.data);
       } else {
         toast.error("Gagal mengambil data booking");
       }
@@ -114,7 +116,7 @@ export default function BookingHistory() {
         {b.start_date} – {b.end_date}
       </p>
       <p>
-        <span className="font-medium">Gender:</span> {b.gender}
+        <span className="font-medium">Gender:</span> {b.gender.toUpperCase()}
       </p>
     </div>
 
@@ -134,7 +136,7 @@ export default function BookingHistory() {
     {/* Link Detail & Tombol Cetak */}
     <div className="mt-4 flex flex-col gap-2">
       <Link
-        href={`/kost/${b.kos_id}`}
+        href={`/society/kost/${b.kos_id}`}
         className="text-[#2E8B57] text-sm font-medium hover:underline"
       >
         Lihat Detail Kost →

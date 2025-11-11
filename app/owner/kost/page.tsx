@@ -62,7 +62,7 @@ const KosPage = async () => {
                 <td className="p-2">{kos.name}</td>
                 <td className="p-2">{kos.address}</td>
                 <td className="p-2">Rp {kos.price_per_month}</td>
-                <td className="p-2">{kos.gender}</td>
+                <td className="p-2">{kos.gender.toUpperCase()}</td>
                 <td className="p-2 flex gap-2 items-center">
                   {/* Tombol Detail Kos */}
                   <Link
