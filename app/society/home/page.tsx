@@ -2,6 +2,7 @@ import axiosInstance from "@/lib/axios";
 import { getServerCookie } from "@/lib/server-cookies";
 import Image from "next/image";
 import Link from "next/link";
+import FilterBar from "../FilterBar";
 
 export default async function Home() {
   const getKostData = async (): Promise<any[]> => {
@@ -63,32 +64,7 @@ export default async function Home() {
         </div>
 
         {/* FILTER BAR */}
-        <div className="max-w-5xl mx-auto bg-white border border-gray-200 mt-24 p-6 rounded-xl shadow-md flex flex-wrap justify-center gap-4">
-          <select className="bg-white text-gray-700 px-5 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-[#2E8B57]">
-            <option>Semua jenis</option>
-            <option>Putra</option>
-            <option>Putri</option>
-            <option>Campur</option>
-          </select>
-
-          <select className="bg-white text-gray-700 px-5 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-[#2E8B57]">
-            <option>Semua Kota</option>
-            <option>Malang</option>
-            <option>Sigura Gura</option>
-            <option>Suhat</option>
-          </select>
-
-          <select className="bg-white text-gray-700 px-5 py-3 rounded-md border border-gray-300 focus:ring-2 focus:ring-[#2E8B57]">
-            <option>Lokasi</option>
-            <option>Dekat Kampus</option>
-            <option>Dekat Stasiun</option>
-            <option>Dekat Pusat Kota</option>
-          </select>
-
-          <button className="bg-[#F8E16C] text-[#2E8B57] font-bold px-8 py-3 rounded-md hover:bg-[#f5d850] transition">
-            CARI
-          </button>
-        </div>
+<FilterBar />
       </section>
 
       {/* TENTANG KAMI */}
