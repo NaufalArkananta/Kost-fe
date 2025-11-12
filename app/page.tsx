@@ -43,7 +43,7 @@ const handleSubmit = async (e: FormEvent) => {
                 toast.success("Login berhasil!");
                 setTimeout(() => router.replace(`/owner/dashboard`), 1000)
             } else {
-                toast.success("Login berhasil! Silakan login.");
+                toast.success("Login berhasil!");
                 setTimeout(() => router.replace(`/home`), 1000)
             }
         }

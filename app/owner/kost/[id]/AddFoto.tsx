@@ -60,25 +60,6 @@ export default function AddFoto({ kos_id }: { kos_id: number }) {
         return;
       }
 
-      // Ambil nama file dari response backend
-      const filePath = response.data.data.file; // contoh: "images/1762743687_Screenshot.png"
-
-      // 2️⃣ Upload file ke public/images di Next.js pakai nama yang sama
-      const uploadForm = new FormData();
-      uploadForm.append("file", file);
-      uploadForm.append("filePath", filePath); // kirim path ke API upload
-
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: uploadForm,
-      });
-
-      const uploadData = await uploadRes.json();
-      if (uploadData.status !== "success") {
-        toast("Gagal menyimpan file di server", { type: "error" });
-        return;
-      }
-
       toast("Foto berhasil ditambahkan", { type: "success" });
       setShow(false);
       setTimeout(() => router.refresh(), 1000);

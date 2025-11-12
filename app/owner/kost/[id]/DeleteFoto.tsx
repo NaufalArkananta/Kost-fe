@@ -33,24 +33,10 @@ export default function DeleteFoto({ imageId, filePath }: Props) {
       });
 
       if (res.data.status === "success") {
-        // 🔹 2. Hapus file lokal dari /public/images
-// 🔹 2. Hapus file lokal dari /public/images (Next.js local API)
-const delRes = await fetch("/api/delete-local-image", {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({ filePath }),
-});
+        toast("Foto berhasil dihapus", { type: "success" });
 
-const delData = await delRes.json();
-
-if (delData.status === "success") {
-  toast("Foto berhasil dihapus", { type: "success" });
-  setTimeout(() => router.refresh(), 1000);
-} else {
-  toast("Foto dihapus di database tapi gagal hapus file lokal", {
-    type: "warning",
-  });
-}
+        // 🔹 2. Refresh halaman untuk memperbarui tampilan
+        router.refresh();
       } else {
         toast(res.data.message || "Gagal menghapus foto", { type: "error" });
       }

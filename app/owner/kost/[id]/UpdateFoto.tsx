@@ -61,23 +61,6 @@ export default function UpdateFoto({ imageId }: { imageId: number }) {
         return;
       }
 
-      // 🔹 Upload ke public/images (Next.js local)
-      const filePath = response.data.data.file; // e.g. "images/1762786686_horizontal-logo.png"
-      const uploadForm = new FormData();
-      uploadForm.append("file", file);
-      uploadForm.append("filePath", filePath);
-
-      const uploadRes = await fetch("/api/upload", {
-        method: "POST",
-        body: uploadForm,
-      });
-
-      const uploadData = await uploadRes.json();
-      if (uploadData.status !== "success") {
-        toast("Gagal menyimpan file di server", { type: "error" });
-        return;
-      }
-
       toast("Foto berhasil diperbarui", { type: "success" });
       setShow(false);
       setTimeout(() => router.refresh(), 1000);

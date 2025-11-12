@@ -52,7 +52,9 @@ export default async function DashboardPage({
                 <Image
                   src={
                     kost.kos_image?.length > 0
-                      ? `/${kost.kos_image[0].file.replace(/\s+/g, "_")}`
+                      ? `${
+                          process.env.NEXT_PUBLIC_IMAGE_URL
+                        }${encodeURIComponent(kost.kos_image[0].file)}`
                       : "/images/default.jpg"
                   }
                   alt={kost.name}

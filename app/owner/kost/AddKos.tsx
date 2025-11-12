@@ -87,26 +87,6 @@ const AddKos = () => {
           toast("Gagal upload ke backend", { type: "error" });
           return;
         }
-
-        // Ambil nama file dari backend Laravel
-        const filePath = uploadRes.data.data.file; // contoh: "images/1762743687_Screenshot.png"
-
-        // 3️⃣ Upload file ke public/images di Next.js agar tersimpan fisik
-        const uploadForm = new FormData();
-        uploadForm.append("file", file);
-        uploadForm.append("filePath", filePath);
-
-        const nextRes = await fetch("/api/upload", {
-          method: "POST",
-          body: uploadForm,
-        });
-
-        const nextData = await nextRes.json();
-
-        if (nextData.status !== "success") {
-          toast("Gagal menyimpan file ke public/images", { type: "error" });
-          return;
-        }
       }
 
       toast("Berhasil menambah kos", { type: "success" });

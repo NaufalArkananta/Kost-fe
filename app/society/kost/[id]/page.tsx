@@ -5,7 +5,7 @@ import axiosInstance from "@/lib/axios";
 import Cookies from "js-cookie";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowLeft, Star, X } from "lucide-react";
+import { ArrowLeft, X } from "lucide-react";
 import AddReview from "./AddReview";
 import DeleteReview from "./DeleteReview";
 import AddBooking from "./AddBooking";
@@ -17,7 +17,6 @@ export default function KostDetail({ params }: { params: { id: string } }) {
   const [showDelete, setShowDelete] = useState(false);
   const [selectedReviewId, setSelectedReviewId] = useState<number | null>(null);
   const [showBooking, setShowBooking] = useState(false);
-
 
   const userId = Cookies.get("user_id"); // 🔥 ambil user_id dari cookie
 
@@ -83,13 +82,11 @@ export default function KostDetail({ params }: { params: { id: string } }) {
         <div className="relative w-full h-96 rounded-xl overflow-hidden shadow-xl">
           <Image
             src={
-              kost.kos_image?.length
-                ? `/images/${encodeURI(
+              kost.kos_image?.length > 0
+                ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${encodeURIComponent(
                     kost.kos_image[0].file
-                      .replace("images/", "")
-                      .replace(/\s+/g, "_")
                   )}`
-                : "/images/kamar1.jpeg"
+                : "/images/default.jpg"
             }
             alt={kost.name}
             fill
@@ -113,14 +110,14 @@ export default function KostDetail({ params }: { params: { id: string } }) {
           </div>
 
           {/* Tombol Booking */}
-<div className="mt-6">
-  <button
-    onClick={() => setShowBooking(true)}
-    className="bg-[#2E8B57] text-white px-5 py-2 rounded-md hover:bg-[#276e47] transition"
-  >
-    Booking Kost
-  </button>
-</div>
+          <div className="mt-6">
+            <button
+              onClick={() => setShowBooking(true)}
+              className="bg-[#2E8B57] text-white px-5 py-2 rounded-md hover:bg-[#276e47] transition"
+            >
+              Booking Kost
+            </button>
+          </div>
 
           <hr className="my-6 border-gray-200" />
           <p className="text-gray-700 leading-relaxed text-lg">
@@ -211,10 +208,10 @@ export default function KostDetail({ params }: { params: { id: string } }) {
 
       {/* === MODAL TAMBAH BOOKING === */}
       <AddBooking
-  kostId={params.id}
-  isShow={showBooking}
-  onClose={() => setShowBooking(false)}
-/>
+        kostId={params.id}
+        isShow={showBooking}
+        onClose={() => setShowBooking(false)}
+      />
     </div>
   );
 }

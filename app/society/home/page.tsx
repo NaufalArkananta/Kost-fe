@@ -7,8 +7,8 @@ import FilterBar from "../FilterBar";
 export default async function Home() {
   const getKostData = async (): Promise<any[]> => {
     try {
-      const url = `/society/show_kos?search=`
-      const access_token = await getServerCookie(`access_token`)
+      const url = `/society/show_kos?search=`;
+      const access_token = await getServerCookie(`access_token`);
 
       const response = await axiosInstance.get(url, {
         headers: {
@@ -16,18 +16,16 @@ export default async function Home() {
         },
       });
 
-      const data = response.data.data
+      const data = response.data.data;
 
+      if (response.data.status === "success") return data.slice(0, 6); // ✅ <--- dibatasi maksimal 6
 
-      if (response.data.status === "success")
-        return data.slice(0, 6) // ✅ <--- dibatasi maksimal 6
-
-      return []
+      return [];
     } catch (error) {
       console.error("Error fetching kost data:", error);
       return [];
     }
-  }
+  };
 
   const dataKost = await getKostData();
 
@@ -38,7 +36,7 @@ export default async function Home() {
         <div className="max-w-6xl mx-auto grid md:grid-cols-2 items-center gap-16">
           <div>
             <h1 className="text-4xl md:text-5xl font-extrabold mb-8 leading-snug text-[#2E8B57]">
-              Temukan Kost Favoritmu di {" "}
+              Temukan Kost Favoritmu di{" "}
               <span className="text-[#1A1A1A]">KOSTHUNTER_.COM</span>
             </h1>
             <p className="text-gray-600 mb-10 text-lg leading-relaxed">
@@ -64,7 +62,7 @@ export default async function Home() {
         </div>
 
         {/* FILTER BAR */}
-<FilterBar />
+        <FilterBar />
       </section>
 
       {/* TENTANG KAMI */}
@@ -83,8 +81,9 @@ export default async function Home() {
               Informasi Kos Terbaik di Malang
             </h2>
             <p className="text-gray-700 mb-6 leading-relaxed">
-              KOSTHUNTER_ menyediakan informasi kos terbaik di Malang dengan fasilitas lengkap,
-              harga murah, bersih, dan nyaman. Kami menawarkan layanan sebagai berikut:
+              KOSTHUNTER_ menyediakan informasi kos terbaik di Malang dengan
+              fasilitas lengkap, harga murah, bersih, dan nyaman. Kami
+              menawarkan layanan sebagai berikut:
             </p>
             <ul className="space-y-3 text-gray-800">
               <li>✅ Cari fasilitas kost dan kontrakan sesuai kebutuhanmu</li>
@@ -92,8 +91,18 @@ export default async function Home() {
               <li>✅ Layanan survey langsung ke lokasi</li>
             </ul>
             <div className="flex gap-4 mt-8">
-              <a href="#" className="bg-gray-100 border px-4 py-2 rounded-md shadow-sm">📸 Instagram</a>
-              <a href="#" className="bg-gray-100 border px-4 py-2 rounded-md shadow-sm">💬 Whatsapp</a>
+              <a
+                href="#"
+                className="bg-gray-100 border px-4 py-2 rounded-md shadow-sm"
+              >
+                📸 Instagram
+              </a>
+              <a
+                href="#"
+                className="bg-gray-100 border px-4 py-2 rounded-md shadow-sm"
+              >
+                💬 Whatsapp
+              </a>
             </div>
           </div>
         </div>
@@ -102,8 +111,12 @@ export default async function Home() {
       {/* KOST REKOMENDASI */}
       <section className="bg-[#FAFAFA] py-24 px-6">
         <div className="max-w-6xl mx-auto text-center mb-12">
-          <h2 className="text-3xl font-bold text-[#2E8B57] mb-3">Kost Rekomendasi Kami</h2>
-          <p className="text-gray-600">Pilihan terbaik untuk kost paling nyaman dan terpercaya untukmu</p>
+          <h2 className="text-3xl font-bold text-[#2E8B57] mb-3">
+            Kost Rekomendasi Kami
+          </h2>
+          <p className="text-gray-600">
+            Pilihan terbaik untuk kost paling nyaman dan terpercaya untukmu
+          </p>
         </div>
 
         <div className="max-w-6xl mx-auto grid sm:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -114,12 +127,10 @@ export default async function Home() {
             >
               <Image
                 src={
-                  kost.kos_image?.length
-                    ? `/images/${encodeURI(
-                      kost.kos_image[0].file
-                        .replace('images/', '')
-                        .replace(/\s+/g, '_')
-                    )}`
+                  kost.kos_image?.length > 0
+                    ? `${process.env.NEXT_PUBLIC_IMAGE_URL}${encodeURIComponent(
+                        kost.kos_image[0].file
+                      )}`
                     : "/images/default.jpg"
                 }
                 alt={kost.name}
@@ -129,7 +140,9 @@ export default async function Home() {
                 unoptimized
               />
               <div className="p-5 bg-[#2E8B57] text-white">
-                <p className="text-sm mb-1">Rp{Number(kost.price_per_month).toLocaleString("id-ID")}/bulan</p>
+                <p className="text-sm mb-1">
+                  Rp{Number(kost.price_per_month).toLocaleString("id-ID")}/bulan
+                </p>
                 <h3 className="font-semibold text-lg mb-1">{kost.name}</h3>
                 <p className="text-sm text-green-100">{kost.address}</p>
               </div>

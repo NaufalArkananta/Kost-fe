@@ -134,9 +134,7 @@ export default async function KosDetailPage({
           {kos.kos_image.length > 0 ? (
             <div className="flex flex-wrap gap-3">
               {kos.kos_image.map((img) => {
-                const imageUrl = img.file.startsWith("/")
-                  ? img.file
-                  : `/${img.file}`;
+                const imageUrl = `${process.env.NEXT_PUBLIC_IMAGE_URL}${img.file}`
                 return (
                   <div key={img.id} className="relative group">
                     <Image
